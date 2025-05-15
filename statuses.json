@@ -1,0 +1,18 @@
+{
+    "roles": {
+        "ProductSeller": 0,
+        "DistributorToWarehouse": 1,
+        "Warehouse": 2,
+        "DoorToDoorDelivery": 3,
+        "ProductBuyer": 4
+    },
+    "statuses": {
+        "Available": 0,
+        "ReadyToShip": 1,
+        "Shipping": 2,
+        "Shipped": 3,
+        "ReadyForDelivery": 4,
+        "OutForDelivery": 5,
+        "Delivered": 6
+    }
+}

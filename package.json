@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@helia/json": "^4.0.5",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "ethers": "^5.8.0",
+    "express": "^5.1.0",
+    "ganache": "^7.9.2",
+    "helia": "^5.4.1",
+    "multiformats": "^13.3.3"
+  }
+}
