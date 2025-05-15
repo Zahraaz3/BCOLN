@@ -18,12 +18,12 @@ const supplyChainContract = new ethers.Contract(
     contracts.supplyChain,
     supplyChainContractAbi
 );
-// function _sleep(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-//   }
-  function _sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, 1));
+function _sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
+//   function _sleep(ms) {
+//     return new Promise(resolve => setTimeout(resolve, 1));
+//   }
 const tokenContract = new ethers.Contract(
     contracts.token,
     tokenContractAbi
