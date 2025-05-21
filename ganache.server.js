@@ -20,11 +20,11 @@ server.listen(PORT, async err => {
   fs.writeFileSync("./accounts.json", JSON.stringify(accountAra))
   const ethprovider = new ethers.providers.JsonRpcProvider();
   const signer = ethprovider.getSigner()
-  const supplyChainToken = await _deployContract("SupplyChainToken", require("./contracts/ERC20Contract/abi.json"), require("./contracts/ERC20Contract/bytecode.json").bytecode.object, signer, [100000000000])
-  const supplyChainContract = await _deployContract("SupplyChainContract", require("./contracts/SupplyChainContract/abi.json"), require("./contracts/SupplyChainContract/bytecode.json").bytecode.object, signer, [supplyChainToken.address])
+  const supplyChainContract = await _deployContract("SupplyChainContract", require("./contracts/SupplyChainContract/abi.json"), require("./contracts/SupplyChainContract/bytecode.json").bytecode.object, signer)
+  const tokenAddress = await supplyChainContract.connect(signer).tokenAddress()
   fs.writeFileSync("./contracts/addresses.json", JSON.stringify({
     supplyChain: supplyChainContract.address,
-    token: supplyChainToken.address
+    token: tokenAddress.toString()
   }))
   
 });

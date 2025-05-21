@@ -1,43 +1,6 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "u",
-				"type": "address"
-			}
-		],
-		"name": "approveEnrollment",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "pid",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "idx",
-				"type": "uint256"
-			}
-		],
-		"name": "approveStatusChange",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_tokenAddress",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -55,6 +18,12 @@
 				"internalType": "enum SupplyChainContract.Role",
 				"name": "r",
 				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
 			}
 		],
 		"name": "EnrollApproved",
@@ -124,37 +93,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "enum SupplyChainContract.Role",
-				"name": "r",
-				"type": "uint8"
-			}
-		],
-		"name": "requestEnrollment",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "pid",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum SupplyChainContract.Status",
-				"name": "to",
-				"type": "uint8"
-			}
-		],
-		"name": "requestStatusChange",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -219,17 +157,40 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "cid",
-				"type": "string"
+				"internalType": "address",
+				"name": "u",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "price",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"name": "uploadProduct",
+		"name": "approveEnrollment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "pid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Status",
+				"name": "from",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Status",
+				"name": "to",
+				"type": "uint8"
+			}
+		],
+		"name": "approveStatusChange",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -250,7 +211,7 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
@@ -261,50 +222,6 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "productRequests",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "productId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum SupplyChainContract.Status",
-				"name": "from",
-				"type": "uint8"
-			},
-			{
-				"internalType": "enum SupplyChainContract.Status",
-				"name": "to",
-				"type": "uint8"
-			},
-			{
-				"internalType": "address",
-				"name": "requester",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "accepted",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -372,6 +289,42 @@
 	{
 		"inputs": [
 			{
+				"internalType": "enum SupplyChainContract.Role",
+				"name": "r",
+				"type": "uint8"
+			}
+		],
+		"name": "requestEnrollment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "pid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Status",
+				"name": "from",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Status",
+				"name": "to",
+				"type": "uint8"
+			}
+		],
+		"name": "requestStatusChange",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
@@ -380,32 +333,96 @@
 				"internalType": "enum SupplyChainContract.Status",
 				"name": "",
 				"type": "uint8"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Status",
+				"name": "",
+				"type": "uint8"
 			}
 		],
-		"name": "statusChangePayments",
+		"name": "statusChangeOperations",
 		"outputs": [
+			{
+				"internalType": "address",
+				"name": "requesterAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "approverAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "requested",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Role",
+				"name": "requester",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum SupplyChainContract.Role",
+				"name": "approver",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokenAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "u",
+				"type": "address"
+			},
 			{
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
-			},
-			{
-				"internalType": "enum SupplyChainContract.Role",
-				"name": "payer",
-				"type": "uint8"
-			},
-			{
-				"internalType": "enum SupplyChainContract.Role",
-				"name": "receiver",
-				"type": "uint8"
-			},
-			{
-				"internalType": "bool",
-				"name": "isPercentage",
-				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
+		"name": "topUp",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "cid",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "uploadProduct",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

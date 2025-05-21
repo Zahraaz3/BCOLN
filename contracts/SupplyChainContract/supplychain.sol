@@ -294,7 +294,7 @@ contract SupplyChainContract {
         );
         if (
             (from == Status.Available && to == Status.ReadyToShip) ||
-            (from == Status.ReadyForDelivery && to == Status.Shipping) ||
+            (from == Status.ReadyToShip && to == Status.Shipping) ||
             (from == Status.Shipped && to == Status.ReadyForDelivery)
         ) {
             require(
@@ -331,14 +331,14 @@ contract SupplyChainContract {
     ) internal view returns (bool) {
         if (from == Status.Available && to == Status.ReadyToShip) {
             return true;
-        } else if (from == Status.ReadyForDelivery && to == Status.Shipping) {
+        } else if (from == Status.ReadyToShip && to == Status.Shipping) {
             return
                 statusChangeOperations[pid][Status.Available][
                     Status.ReadyToShip
                 ].approved;
         } else if (from == Status.Shipping && to == Status.Shipped) {
             return
-                statusChangeOperations[pid][Status.ReadyForDelivery][
+                statusChangeOperations[pid][Status.ReadyToShip][
                     Status.Shipping
                 ].approved;
         } else if (from == Status.Shipped && to == Status.ReadyForDelivery) {
@@ -378,7 +378,7 @@ contract SupplyChainContract {
         );
         if (
             (from == Status.Available && to == Status.ReadyToShip) ||
-            (from == Status.ReadyForDelivery && to == Status.Shipping)
+            (from == Status.ReadyToShip && to == Status.Shipping)
         ) {
             require(
                 statusChangeOperations[pid][from][to].approver ==

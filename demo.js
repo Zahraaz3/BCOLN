@@ -51,21 +51,21 @@ const uploadProductToIpfs = async () => {
     return response.data.cid
 
 }
-const _requestStatusChange = async (id, privateKey, status, logText) => {
+const _requestStatusChange = async (id, privateKey, from, to, logText) => {
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = supplyChainContract.connect(wallet)
     console.log(logText)
-    const transaction = await contract.requestStatusChange(id,status)
-    console.log(transaction)
+    const transaction = await contract.requestStatusChange(id,from, to)
+    // console.log(transaction)
     await _sleep(1000)
 }
 
-const _approveStatusChange = async (id, privateKey, idx, logText) => {
+const _approveStatusChange = async (id, privateKey, from, to, logText) => {
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = supplyChainContract.connect(wallet)
     console.log(logText)
-    const transaction = await contract.approveStatusChange(id, idx, {gasLimit: 1000000})
-    console.log(transaction)
+    const transaction = await contract.approveStatusChange(id, from, to)
+    // console.log(transaction)
     await _sleep(1000)
 }
 
@@ -74,7 +74,7 @@ const _uploadProduct = async(cid, price, privateKey) => {
     const contract = supplyChainContract.connect(wallet)
     console.log("Uploading Product")
     const transaction = await contract.uploadProduct(cid, price)
-    console.log(transaction)
+    // console.log(transaction)
     await _sleep(1000)
 
 }
@@ -97,15 +97,15 @@ const _enrollRequest = async(logText, role, privateKey) => {
     const contract = supplyChainContract.connect(wallet)
     console.log(logText)
     const transaction = await contract.requestEnrollment(role)
-    console.log(transaction)
+    // console.log(transaction)
     await _sleep(1000)
 }
-const _approveEnrollRequest = async (logText, address) => {
+const _approveEnrollRequest = async (logText, address, amount) => {
     const wallet = new ethers.Wallet(owner.privateKey, provider)
     const contract = supplyChainContract.connect(wallet)
-    console.log(logText)
-    const transaction = await contract.approveEnrollment(address)
-    console.log(transaction)
+    console.log(`${logText} with amount: ${amount}`)
+    const transaction = await contract.approveEnrollment(address, amount)
+    // console.log(transaction)
     await _sleep(1000)
 
 }
@@ -132,44 +132,59 @@ await _enrollRequest("Enrollment request of Warehouse ", status.roles.Warehouse,
 await _enrollRequest("Enrollment request of Door To Door Delivery", status.roles.DoorToDoorDelivery, doorToDoorDelivery.privateKey)
 await _enrollRequest("Enrollment request of Product Buyer", status.roles.ProductBuyer, productBuyer.privateKey)
 
-// await _statusCheck(seller.publicKey, "Product Seller")
-// await _statusCheck(distributorToWarehouse.publicKey, "Distributor To Warehouse")
-// await _statusCheck(warehouse.publicKey, "Warehouse")
-// await _statusCheck(doorToDoorDelivery.publicKey, "Door To Door Delivery")
-// await _statusCheck(productBuyer.publicKey, "Product Buyer")
+await _statusCheck(seller.publicKey, "Product Seller")
+await _statusCheck(distributorToWarehouse.publicKey, "Distributor To Warehouse")
+await _statusCheck(warehouse.publicKey, "Warehouse")
+await _statusCheck(doorToDoorDelivery.publicKey, "Door To Door Delivery")
+await _statusCheck(productBuyer.publicKey, "Product Buyer")
 
-await _approveEnrollRequest("Approve Enroll request of Product Seller", seller.publicKey)
-await _approveEnrollRequest("Approve Enroll request of Distributor To Warehouse", distributorToWarehouse.publicKey)
-await _approveEnrollRequest("Approve Enroll request of Warehouse", warehouse.publicKey)
-await _approveEnrollRequest("Approve Enroll request of Door To Door Delivery", doorToDoorDelivery.publicKey)
-await _approveEnrollRequest("Approve Enroll request of Product Buyer", productBuyer.publicKey)
+await _approveEnrollRequest("Approve Enroll request of Product Seller", seller.publicKey, 1000)
+await _approveEnrollRequest("Approve Enroll request of Distributor To Warehouse", distributorToWarehouse.publicKey, 1000)
+await _approveEnrollRequest("Approve Enroll request of Warehouse", warehouse.publicKey, 1000)
+await _approveEnrollRequest("Approve Enroll request of Door To Door Delivery", doorToDoorDelivery.publicKey, 1000)
+await _approveEnrollRequest("Approve Enroll request of Product Buyer", productBuyer.publicKey, 1000)
 
-// await _statusCheck(seller.publicKey, "Product Seller")
-// await _statusCheck(distributorToWarehouse.publicKey, "Distributor To Warehouse")
-// await _statusCheck(warehouse.publicKey, "Warehouse")
-// await _statusCheck(doorToDoorDelivery.publicKey, "Door To Door Delivery")
-// await _statusCheck(productBuyer.publicKey, "Product Buyer")
+await _statusCheck(seller.publicKey, "Product Seller")
+await _statusCheck(distributorToWarehouse.publicKey, "Distributor To Warehouse")
+await _statusCheck(warehouse.publicKey, "Warehouse")
+await _statusCheck(doorToDoorDelivery.publicKey, "Door To Door Delivery")
+await _statusCheck(productBuyer.publicKey, "Product Buyer")
 
-await _addFunds("Adding Fund to Seller Account", seller.publicKey, 10000)
-await _addFunds("Adding Fund to Distributor To Warehouse Account", distributorToWarehouse.publicKey, 10000)
-await _addFunds("Adding Fund to Warehouse Account", warehouse.publicKey, 10000)
-await _addFunds("Adding Fund to Door To Door Delivery Account", doorToDoorDelivery.publicKey, 10000)
-await _addFunds("Adding Fund to Product Buyer Account", productBuyer.publicKey, 10000)
-
-// await _checkBalance(seller.publicKey, "Product Seller")
-// await _checkBalance(distributorToWarehouse.publicKey, "Distributor To Warehouse")
-// await _checkBalance(warehouse.publicKey, "Warehouse")
-// await _checkBalance(doorToDoorDelivery.publicKey, "Door To Door Delivery")
-// await _checkBalance(productBuyer.publicKey, "Product Buyer")
+await _checkBalance(seller.publicKey, "Product Seller")
+await _checkBalance(distributorToWarehouse.publicKey, "Distributor To Warehouse")
+await _checkBalance(warehouse.publicKey, "Warehouse")
+await _checkBalance(doorToDoorDelivery.publicKey, "Door To Door Delivery")
+await _checkBalance(productBuyer.publicKey, "Product Buyer")
 
 const cid = await uploadProductToIpfs()
 await _uploadProduct(cid, 100, seller.privateKey)
 const productId = await _getProductId(cid) 
-await _requestStatusChange(productId, productBuyer.privateKey, status.statuses.ReadyToShip, "Buyer is requesting to order")
-await _approveStatusChange(productId, seller.privateKey, 0, "Seller Accepted the request")
+console.log(productId.toString())
 
 
+await _requestStatusChange(productId, productBuyer.privateKey, status.statuses.Available, status.statuses.ReadyToShip, "Buyer is requesting to order")
+await _approveStatusChange(productId, seller.privateKey, status.statuses.Available, status.statuses.ReadyToShip, "Seller Accepted the request")
 
+await _requestStatusChange(productId, distributorToWarehouse.privateKey, status.statuses.ReadyToShip, status.statuses.Shipping, "Distributor to warehouse is requesting to pick up the order")
+await _approveStatusChange(productId, seller.privateKey, status.statuses.ReadyToShip, status.statuses.Shipping, "Seller Accepted the request to pick up")
+
+await _requestStatusChange(productId, distributorToWarehouse.privateKey, status.statuses.Shipping, status.statuses.Shipped, "Distributor to warehouse is requesting to ship the order to the warehouse")
+await _approveStatusChange(productId, warehouse.privateKey, status.statuses.Shipping, status.statuses.Shipped, "Warehouse Accepted the request to ship")
+
+await _requestStatusChange(productId, doorToDoorDelivery.privateKey, status.statuses.Shipped, status.statuses.ReadyForDelivery, "Door To Door delivery is requesting to pick up the order")
+await _approveStatusChange(productId, warehouse.privateKey, status.statuses.Shipped, status.statuses.ReadyForDelivery, "Warehouse Accepted the request to pick up")
+
+await _requestStatusChange(productId, doorToDoorDelivery.privateKey, status.statuses.ReadyForDelivery, status.statuses.OutForDelivery, "Door To Door delivery is requesting to dispatch the order")
+await _approveStatusChange(productId, warehouse.privateKey, status.statuses.ReadyForDelivery, status.statuses.OutForDelivery, "Warehouse Accepted the request to dispatch")
+
+await _requestStatusChange(productId, doorToDoorDelivery.privateKey, status.statuses.OutForDelivery, status.statuses.Delivered, "Door to door delivery is requesting to deliver the order")
+await _approveStatusChange(productId, productBuyer.privateKey, status.statuses.OutForDelivery, status.statuses.Delivered, "Buyer Accepted the request to deliver")
+
+await _checkBalance(seller.publicKey, "Product Seller")
+await _checkBalance(distributorToWarehouse.publicKey, "Distributor To Warehouse")
+await _checkBalance(warehouse.publicKey, "Warehouse")
+await _checkBalance(doorToDoorDelivery.publicKey, "Door To Door Delivery")
+await _checkBalance(productBuyer.publicKey, "Product Buyer")
 // await _requestStatusChange(productId, distributorToWarehouse.privateKey, status.statuses.Shipping, "Distributor requested for handover")
 // await _approveStatusChange(productId, seller.privateKey, 1, "Seller has handed over the product")
 // await _checkBalance(seller.publicKey, "Product Seller")
